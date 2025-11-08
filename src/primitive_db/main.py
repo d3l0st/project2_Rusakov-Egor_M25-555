@@ -1,4 +1,6 @@
 def main():
-    print("Первая попытка запустить проект!")
+    print("DB project is running! ")
+
+
 if __name__ == "__main__":
     main()

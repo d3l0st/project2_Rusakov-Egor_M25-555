@@ -1,12 +1,11 @@
-packages = [
-    { include = "src" },
-]
-
 [tool.poetry]
-name = "project#2_Rusakov_Egor"
+name = "primitive-db"
 version = "0.1.0"
 description = "Python study project №2"
 authors = ["Ekrusakov <Ekrusakov04@gmail.com>"]
+
+[tool.poetry.scripts]
+project = "src.primitive_db.main:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
