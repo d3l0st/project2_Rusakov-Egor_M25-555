@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "primitive-db"
+name = "primitive_db"
 version = "0.1.0"
 description = "Python study project №2"
 authors = ["Ekrusakov <Ekrusakov04@gmail.com>"]
@@ -9,6 +9,7 @@ project = "src.primitive_db.main:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+prompt = "^0.4.1"
 
 [tool.poetry.dev-dependencies]
 
@@ -17,6 +18,14 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 packages = [
-    { include = "src" },
+    { include = "src" , from = "."},
 ]
- 
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+exclude = ["venv", ".venv", "dist", "__pycache__"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = []
