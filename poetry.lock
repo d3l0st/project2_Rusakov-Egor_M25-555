@@ -1,4 +1,12 @@
 [[package]]
+name = "asciinema"
+version = "2.4.0"
+description = "Terminal session recorder"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "prompt"
 version = "0.4.1"
 description = "Library for prompting input on the command line."
@@ -9,7 +17,8 @@ python-versions = ">=3.3"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "77ddf2df65894867004408b8b225878c2b86d62f04d464e06400caacf189df15"
+content-hash = "3d1c831d7646a476abc1e7d4a63864cf72528e7e10b71169d10976a62ec7fbd8"
 
 [metadata.files]
+asciinema = []
 prompt = []
