@@ -10,6 +10,7 @@ database = "src.primitive_db.main:main"
 [tool.poetry.dependencies]
 python = "^3.10"
 prompt = "^0.4.1"
+prettytable = "^3.16.0"
 
 [tool.poetry.dev-dependencies]
 asciinema = "^2.4.0"
