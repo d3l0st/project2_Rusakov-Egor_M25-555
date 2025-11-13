@@ -211,3 +211,6 @@ __marimo__/
 
 #Data tables
 data/
+
+#Gif-files for README.md
+*.gif

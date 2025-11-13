@@ -91,10 +91,17 @@ info <таблица>
 - **Прозрачная работа** - не требует действий от пользователя
 
 ## Демо
+**Демонстрация работы приложения для пункта 2 задания** 
 
-[![Демонастрация работы для пункта 2 задания](https://asciinema.org/a/wHLdrNbk8bJFRUJJ7dhVvXpTw)](https://asciinema.org/a/wHLdrNbk8bJFRUJJ7dhVvXpTw)
+![Демонстрация работы приложения для пункта 2 задания](1.gif)
 
-[![Демонастрация работы для пункта 3 задания](https://asciinema.org/a/aPQplt8gKFbo3IGP9cESl6qew)](https://asciinema.org/a/aPQplt8gKFbo3IGP9cESl6qew)
 
-[![Демонастрация работы для пункта 4 задания](https://asciinema.org/a/MZvFbsDSGGOTZPszF3LwU24QC)](https://asciinema.org/a/MZvFbsDSGGOTZPszF3LwU24QC)
+**Демонстрация работы приложения для пункта 3 задания**
+
+![Демонстрация работы приложения для пункта 3 задания](2.gif)
+
+
+**Демонстрация работы приложения для пункта 4 задания**
+
+![Демонстрация работы приложения для пункта 4 задания](3.gif)
 
