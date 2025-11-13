@@ -12,7 +12,7 @@ python = "^3.10"
 prompt = "^0.4.1"
 prettytable = "^3.16.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 asciinema = "^2.4.0"
 
 [build-system]
