@@ -1,8 +1,16 @@
 from prettytable import PrettyTable
 
+from src.decorators import (  # меняем импорт
+    cacher,
+    confirm_action,
+    handle_db_errors,
+    log_time,
+)
+
 from .parser import parse_value
 
 
+@handle_db_errors
 def create_table(metadata, table_name, columns):
     if table_name in metadata:
         return f'Ошибка: Таблица "{table_name}" уже существует.'
@@ -34,6 +42,8 @@ def create_table(metadata, table_name, columns):
     cols_str = ", ".join(all_columns)
     return f'Таблица "{table_name}" успешно создана со столбцами: {cols_str}'
 
+@handle_db_errors
+@confirm_action("удаление таблицы")
 def drop_table(metadata, table_name):
     if table_name not in metadata:
         return f'Ошибка: Таблица "{table_name}" не существует.'
@@ -41,11 +51,14 @@ def drop_table(metadata, table_name):
     del metadata[table_name]
     return f'Таблица "{table_name}" успешно удалена.'
 
+@handle_db_errors
 def list_tables(metadata):
     if not metadata:
         return "Нет созданных таблиц."
     return "\n".join(f"- {table}" for table in metadata.keys())
 
+@handle_db_errors
+@log_time
 def insert(metadata, table_name, values, table_data):
     if table_name not in metadata:
         return f'Ошибка: Таблица "{table_name}" не существует.'
@@ -79,25 +92,30 @@ def insert(metadata, table_name, values, table_data):
     table_data.append(record)
     return table_data, f'Запись с ID={new_id} успешно добавлена в таблицу "{table_name}".' #noqa 501
 
+@handle_db_errors
+@log_time
 def select(table_data, columns, where_clause=None):
-    if not table_data:
-        return []
-    
-    # Фильтрация
-    if where_clause:
-        filtered_data = []
-        for record in table_data:
-            match = True
-            for col, val in where_clause.items():
-                if record.get(col) != val:
-                    match = False
-                    break
-            if match:
-                filtered_data.append(record)
-        return filtered_data
-    else:
-        return table_data
+    cache_key = f"select_{hash(str((columns, where_clause)))}"
+    def perform_select():
+        if not table_data:
+            return []
+        # Фильтрация
+        if where_clause:
+            filtered_data = []
+            for record in table_data:
+                match = True
+                for col, val in where_clause.items():
+                    if record.get(col) != val:
+                        match = False
+                        break
+                if match:
+                    filtered_data.append(record)
+            return filtered_data
+        else:
+            return table_data
+    return cacher(cache_key, perform_select)
 
+@handle_db_errors
 def format_table(data, columns):
     """Форматирует данные в виде PrettyTable"""
     if not data:
@@ -112,6 +130,7 @@ def format_table(data, columns):
     
     return table
 
+@handle_db_errors
 def update(table_data, set_clause, where_clause):
     updated_count = 0
     
@@ -129,6 +148,8 @@ def update(table_data, set_clause, where_clause):
     
     return table_data, updated_count
 
+@handle_db_errors
+@confirm_action("удаление записи")
 def delete(table_data, where_clause):
     if not where_clause:
         return [], len(table_data)
@@ -150,6 +171,7 @@ def delete(table_data, where_clause):
     
     return filtered_data, deleted_count
 
+@handle_db_errors
 def info(metadata, table_name, table_data):
     if table_name not in metadata:
         return f'Ошибка: Таблица "{table_name}" не существует.'
