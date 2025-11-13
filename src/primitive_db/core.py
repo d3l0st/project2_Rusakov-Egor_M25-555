@@ -12,6 +12,21 @@ from .parser import parse_value
 
 @handle_db_errors
 def create_table(metadata, table_name, columns):
+    """
+    Создает новую таблицу в базе данных.
+    
+    Args:
+        metadata (dict): Метаданные всех таблиц
+        table_name (str): Имя создаваемой таблицы
+        columns (list): Список столбцов в формате ['имя:тип', ...]
+    
+    Returns:
+        str: Сообщение об успешном создании или ошибке
+    
+    Raises:
+        ValueError: Если имя таблицы или столбцов некорректно
+        KeyError: Если таблица уже существует
+    """
     if table_name in metadata:
         return f'Ошибка: Таблица "{table_name}" уже существует.'
     
@@ -45,6 +60,19 @@ def create_table(metadata, table_name, columns):
 @handle_db_errors
 @confirm_action("удаление таблицы")
 def drop_table(metadata, table_name):
+    """
+    Удаляет таблицу из базы данных.
+    
+    Args:
+        metadata (dict): Метаданные всех таблиц
+        table_name (str): Имя удаляемой таблицы
+    
+    Returns:
+        str: Сообщение об успешном удалении или ошибке
+    
+    Note:
+        Требует подтверждения пользователя перед выполнением
+    """
     if table_name not in metadata:
         return f'Ошибка: Таблица "{table_name}" не существует.'
     
@@ -53,6 +81,15 @@ def drop_table(metadata, table_name):
 
 @handle_db_errors
 def list_tables(metadata):
+    """
+    Возвращает список всех таблиц в базе данных.
+    
+    Args:
+        metadata (dict): Метаданные всех таблиц
+    
+    Returns:
+        str: Форматированный список таблиц или сообщение об отсутствии таблиц
+    """
     if not metadata:
         return "Нет созданных таблиц."
     return "\n".join(f"- {table}" for table in metadata.keys())
@@ -60,6 +97,22 @@ def list_tables(metadata):
 @handle_db_errors
 @log_time
 def insert(metadata, table_name, values, table_data):
+    """
+    Добавляет новую запись в таблицу.
+    
+    Args:
+        metadata (dict): Метаданные всех таблиц
+        table_name (str): Имя таблицы
+        values (list): Список значений для вставки
+        table_data (list): Существующие данные таблицы
+    
+    Returns:
+        tuple: (обновленные данные таблицы, сообщение о результате)
+    
+    Note:
+        Автоматически генерирует ID для новой записи
+        Логирует время выполнения операции
+    """
     if table_name not in metadata:
         return f'Ошибка: Таблица "{table_name}" не существует.'
 
@@ -95,6 +148,21 @@ def insert(metadata, table_name, values, table_data):
 @handle_db_errors
 @log_time
 def select(table_data, columns, where_clause=None):
+    """
+    Выполняет запрос на выборку данных из таблицы.
+    
+    Args:
+        table_data (list): Данные таблицы
+        columns (list): Список столбцов таблицы
+        where_clause (dict, optional): Условия фильтрации {'столбец': значение}
+    
+    Returns:
+        list: Отфильтрованные данные таблицы
+    
+    Note:
+        Использует кэширование для одинаковых запросов
+        Логирует время выполнения операции
+    """
     cache_key = f"select_{hash(str((columns, where_clause)))}"
     def perform_select():
         if not table_data:
@@ -117,6 +185,16 @@ def select(table_data, columns, where_clause=None):
 
 @handle_db_errors
 def format_table(data, columns):
+    """
+    Форматирует данные таблицы для красивого вывода в консоль.
+    
+    Args:
+        data (list): Данные для форматирования
+        columns (list): Список столбцов таблицы
+    
+    Returns:
+        PrettyTable: Отформатированная таблица или сообщение об отсутствии данных
+    """
     """Форматирует данные в виде PrettyTable"""
     if not data:
         return "Нет данных"
@@ -132,6 +210,17 @@ def format_table(data, columns):
 
 @handle_db_errors
 def update(table_data, set_clause, where_clause):
+    """
+    Обновляет записи в таблице по условию.
+    
+    Args:
+        table_data (list): Данные таблицы
+        set_clause (dict): Новые значения {'столбец': значение}
+        where_clause (dict): Условия для выбора записей {'столбец': значение}
+    
+    Returns:
+        tuple: (обновленные данные таблицы, количество измененных записей)
+    """
     updated_count = 0
     
     for record in table_data:
@@ -151,6 +240,19 @@ def update(table_data, set_clause, where_clause):
 @handle_db_errors
 @confirm_action("удаление записи")
 def delete(table_data, where_clause):
+    """
+    Удаляет записи из таблицы по условию.
+    
+    Args:
+        table_data (list): Данные таблицы
+        where_clause (dict): Условия для выбора записей {'столбец': значение}
+    
+    Returns:
+        tuple: (отфильтрованные данные таблицы, количество удаленных записей)
+    
+    Note:
+        Требует подтверждения пользователя перед выполнением
+    """
     if not where_clause:
         return [], len(table_data)
     
@@ -173,6 +275,17 @@ def delete(table_data, where_clause):
 
 @handle_db_errors
 def info(metadata, table_name, table_data):
+    """
+    Возвращает информацию о таблице.
+    
+    Args:
+        metadata (dict): Метаданные всех таблиц
+        table_name (str): Имя таблицы
+        table_data (list): Данные таблицы
+    
+    Returns:
+        str: Форматированная информация о таблице
+    """
     if table_name not in metadata:
         return f'Ошибка: Таблица "{table_name}" не существует.'
     
