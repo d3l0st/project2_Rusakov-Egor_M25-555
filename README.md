@@ -96,5 +96,5 @@ info <таблица>
 
 [![Демонастрация работы для пункта 3 задания](https://asciinema.org/a/aPQplt8gKFbo3IGP9cESl6qew)](https://asciinema.org/a/aPQplt8gKFbo3IGP9cESl6qew)
 
-[![Демонастрация работы для пункта 3 задания](https://asciinema.org/a/MZvFbsDSGGOTZPszF3LwU24QC)](https://asciinema.org/a/MZvFbsDSGGOTZPszF3LwU24QC)
+[![Демонастрация работы для пункта 4 задания](https://asciinema.org/a/MZvFbsDSGGOTZPszF3LwU24QC)](https://asciinema.org/a/MZvFbsDSGGOTZPszF3LwU24QC)
 
